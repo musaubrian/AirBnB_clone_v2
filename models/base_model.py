@@ -4,7 +4,6 @@ defines a class BaseModel
 """
 
 import uuid
-import models
 from datetime import date, datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.expression import null
