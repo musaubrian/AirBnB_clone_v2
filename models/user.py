@@ -17,19 +17,14 @@ class User(BaseModel, Base):
         last_name = Column(String(128), nullable=True)
         places = relationship(
                 "Place", backref="user",
-                passive_deletes=True,
-                cascade="all,delete"
+                cascade="all, delete",
+                passive_deletes=True
                 )
         reviews = relationship(
                 "Review", backref="user"
                 cascade="all, delete"
                 passive_deletes=True
                 )
-    else:
-        email = ""
-        password = ""
-        first_name = ""
-        last_name = ""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
