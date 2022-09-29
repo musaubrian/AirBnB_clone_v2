@@ -1,24 +1,22 @@
-#!/usr/bin/env python3
-"""
-generate an archive from the web_static folder
-"""
+#!/usr/bin/python3
+"""Compress the contents of the web_static folder"""
+
+from fabric import api
 from datetime import datetime
 import os
-from fabric import api
 
 
 def do_pack():
-    with api.settings(warn_only=True):
-        check_dir = os.path.isdir("versions")
-        if not check_dir:
-            create_dir = api.local('mkdir versions')
-            if create_dir.failed:
-                return None
-            suffix = datetime.now().strftime('%Y%m%d%M%S')
-            path = 'versions/web_static_{}.tgz'.format(suffix)
-            tar = api.local('tar -cvzf {} web_static'.format(path))
-            if tar.failed:
-                return None
-            size = os.stat(path).st_size
-            print('web_static packed: {} -> {}Bytes'.format(path, size))
-            return path
+    """Creates tarball of webstatic files from the web_static
+    folder in Airbnb_v2.
+    Returns: path of .tgz file on success, None otherwise
+    """
+    try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if os.isdir("versions") is False:
+            api.local("mkdir versions")
+        file_name = "versions/web_static_{}.tgz".format(date)
+        api.local("tar -cvzf {} web_static".format(file_name))
+        return file_name
+    except:
+        return None
